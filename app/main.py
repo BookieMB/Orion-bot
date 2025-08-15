@@ -8,9 +8,9 @@ from app.routers import auth, chat, integrations, upload, history
 app = FastAPI(title="LLM MVP (FastAPI)")
 
 # Paths
-BASE_DIR = Path(__file__).resolve().parent           # app/
-STATIC_DIR = BASE_DIR / "static"                     # app/static
-FRONTEND_DIR = BASE_DIR.parent / "frontend"          # frontend/ is outside app/
+BASE_DIR = Path(__file__).resolve().parent          # points to app/
+STATIC_DIR = BASE_DIR / "static"                    # app/static (chat.html, chat.js, etc.)
+FRONTEND_DIR = BASE_DIR.parent / "frontend"         # frontend/ outside app/ (index.html, CSS, JS)
 
 # Mount static folder for chat-specific assets
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
@@ -20,7 +20,7 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 def root():
     return FileResponse(FRONTEND_DIR / "index.html")
 
-# Optional: catch-all route for SPA frontends
+# Optional catch-all route for SPA frontends (like React or Vue)
 @app.get("/{full_path:path}")
 def catch_all(full_path: str):
     return FileResponse(FRONTEND_DIR / "index.html")
